@@ -1,18 +1,18 @@
 #include "data.h"
 #include"timer.h"
 #include <stdio.h>
-Emp_table emp_data_libs[EMP_NUM];
-int work_hours;
+Emp_table emp_data_libs[EMP_NUM];//id对应的成员工作记录
+int work_hours;//必须工作时长
 
 int check_id(int id)
-{
+{//id必须在范围内
     if (id >= EMP_ID_MIN && id <= EMP_ID_MAX)
         return 0;
     return -1;
 }
 
 int in_work(int id, int ntime)
-{
+{//检查是否上班打卡过
     return emp_data_libs[GET_IDX(id)].recs[GET_DAY(ntime)].on_v;
 }
 
@@ -23,16 +23,16 @@ int on_duty(int minutes, int emp_id)
     late = GET_HOUR(minutes) - START_HOUR;
     emp_data_libs[GET_IDX(emp_id)].recs[GET_DAY(minutes)].on_duty = MIN_TO_HM_TRANSFER(minutes);
     emp_data_libs[GET_IDX(emp_id)].recs[GET_DAY(minutes)].on_v = 1;
-    if (GET_DAY(minutes) > 0)
+    if (GET_DAY(minutes) > 0)//如果在周一之后工作
     {
-        over_time = GET_HM_HOUR(get_work_hm(GET_IDX(emp_id), GET_DAY(minutes) - 1));
+        over_time = GET_HM_HOUR(get_work_hm(GET_IDX(emp_id), GET_DAY(minutes) - 1));//检查前一天是否超时工作
     }
-    if (late < 0)
+    if (late < 0)//今天未迟到
         return 0;
-    if (over_time > OVER_TIME && late < AVAILABLE_TIME)
+    if (over_time > OVER_TIME && late < AVAILABLE_TIME)//迟到但是前一天超时工作且今天迟到时间在容忍范围内
         return 0;
     else
-        return (int)(MIN_TO_HM_TRANSFER(minutes));
+        return (int)(MIN_TO_HM_TRANSFER(minutes));//返回迟到时间（work_time)单位
 }
 
 int off_duty(int minutes, int emp_id)
@@ -128,6 +128,7 @@ void write_report()
     int lack = 0;
     for (i = 0; i < EMP_NUM; ++i)
     {
+        printf("id:%d-----------------\n",i+EMP_ID_MIN);
         avar_min = get_avarange(i);
         printf("avarange: %d hours,%d minutes\n", GET_HOUR(avar_min), GET_MIN(avar_min));
         late = get_late(i);

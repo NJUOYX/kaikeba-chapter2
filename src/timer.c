@@ -73,7 +73,7 @@ char*time_show()
     case 4:
         strcat(str_time,"Friday");
         break;
-    default:log_error("day out of range");return NULL;
+    default:return "day out of range\n";
         break;
     }
     sprintf(buffer," %d:%d",hour,min);

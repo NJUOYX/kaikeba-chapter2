@@ -8,8 +8,9 @@
 #define MIN_NUM 60
 #define START_HOUR 7
 #define START_MIN START_HOUR*MIN_NUM
-#define TOTAL_MINUTES DAY_NUM*HOUR_NUM*MIN_NUM - START_HOUR*MIN_NUM
+#define TOTAL_MINUTES DAY_NUM*HOUR_NUM*MIN_NUM
 
+//分钟单位转换
 #define GET_DAY(min) min/HOUR_NUM/MIN_NUM
 #define GET_HOUR(min) (min/MIN_NUM)%HOUR_NUM
 #define GET_MIN(min) (min)%MIN_NUM
@@ -18,11 +19,11 @@ extern int timer;
 extern char str_time[TIME_STR_BUFFER_SIZE];
 extern int mins_per_sec;
 
-int init_timer(int seconds_per_hour);
-int start_timer();
-int check_timer();
-int stop_timer();
-char*time_show();
+int init_timer(int seconds_per_hour);//计时器初始化
+int start_timer();//启动计时器
+int check_timer();//检查当前时间
+int stop_timer();//停止当前时间
+char*time_show();//输出当前时间（格式化输出）
 
 
 
